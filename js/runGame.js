@@ -1,15 +1,14 @@
+const GAME_ID = 'game';
+const STATUS_ID = 'status';
+
+const getElement = id => document.getElementById(id);
+
 const createCell = function(grid, id) {
   const button = document.createElement('button');
   button.className = 'cell';
   button.id = id;
   button.innerText = id;
   grid.appendChild(button);
-};
-
-const displayWon = function(player) {
-  const game = document.getElementById('game');
-  game.innerHTML = `<h2 id="win">Congratulations</h2>
-  <h3 id="win">${player} has won !!!<h3>`;
 };
 
 class Draw {
@@ -28,17 +27,18 @@ class Draw {
     cell.classList.add(`player${count % 2}`);
     cell.disabled = true;
   }
-  updateMove(game, cell) {
-    this.setStyle(cell, game.count);
-    let status = `Current Turn: ${game.nextPlayer.name}`;
-    if (game.count == 9) {
-      status = 'GAME DRAW!!!';
-    }
-    if (game.currentPlayer.isWon()) {
-      displayWon(game.currentPlayer.name);
-      status = '';
+  updateStatus(game, cell) {
+    this.setStyle(cell, game.turnPlayed);
+    const {status, isWon} = game.status();
+    if (isWon) {
+      this.displayWon(game.currentPlayer);
     }
     this.status.innerText = status;
+  }
+  displayWon(player) {
+    const game = document.getElementById('game');
+    game.innerHTML = `<h2 id="win">Congratulations</h2>
+    <h3 id="win">${player.name} has won !!!<h3>`;
   }
 }
 
@@ -48,17 +48,21 @@ const initPlayers = function() {
   return [new Player(name1), new Player(name2)];
 };
 
-const playGame = (game, draw) => {
-  const cell = game.playMove(event);
-  draw.updateMove(game, cell);
+const playGame = (game, draw, event) => {
+  const cellId = event.toElement.id;
+  if (cellId !== GAME_ID) {
+    game.updateMove(cellId);
+    const cell = document.getElementById(cellId);
+    draw.updateStatus(game, cell);
+  }
 };
 
 const main = function() {
   const PLAYERS = initPlayers();
   const game = new Game(PLAYERS[0], PLAYERS[1]);
-  const gameId = document.getElementById('game');
-  const statusElement = document.getElementById('game-status');
-  const draw = new Draw(gameId, statusElement);
+  const gameElement = getElement(GAME_ID);
+  const statusElement = getElement(STATUS_ID);
+  const draw = new Draw(gameElement, statusElement);
   draw.setup(game);
-  gameId.onclick = () => playGame(game, draw);
+  gameElement.onclick = () => playGame(game, draw, event);
 };
