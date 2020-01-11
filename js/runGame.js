@@ -16,16 +16,18 @@ class Draw {
     this.display = display;
     this.status = status;
   }
-  setup(game) {
+  setup() {
     for (let id = 1; id < 10; id++) {
       createCell(this.display, id);
     }
-    this.status.innerText = `Current Turn: ${game.nextPlayer.name}`;
   }
   setStyle(cell, count) {
     cell.classList.add(`played`);
     cell.classList.add(`player${count % 2}`);
     cell.disabled = true;
+  }
+  initStatus(game) {
+    this.status.innerText = `Current Turn: ${game.nextPlayer.name}`;
   }
   updateStatus(game, cell) {
     this.setStyle(cell, game.turnPlayed);
@@ -36,9 +38,9 @@ class Draw {
     this.status.innerText = status;
   }
   displayWon(player) {
-    const game = document.getElementById('game');
-    game.innerHTML = `<h2 id="win">Congratulations</h2>
-    <h3 id="win">${player.name} has won !!!<h3>`;
+    let displayTag = '<h2 id="win">Congratulations</h2>';
+    displayTag += `<h3 id="win">${player.name} has won !!!<h3>`;
+    this.display.innerHTML = displayTag;
   }
 }
 
@@ -52,17 +54,17 @@ const playGame = (game, draw, event) => {
   const cellId = event.toElement.id;
   if (cellId !== GAME_ID) {
     game.updateMove(cellId);
-    const cell = document.getElementById(cellId);
-    draw.updateStatus(game, cell);
+    draw.updateStatus(game, getElement(cellId));
   }
 };
 
 const main = function() {
-  const PLAYERS = initPlayers();
-  const game = new Game(PLAYERS[0], PLAYERS[1]);
   const gameElement = getElement(GAME_ID);
   const statusElement = getElement(STATUS_ID);
   const draw = new Draw(gameElement, statusElement);
-  draw.setup(game);
+  draw.setup();
+  const players = initPlayers();
+  const game = new Game(players[0], players[1]);
+  draw.initStatus(game);
   gameElement.onclick = () => playGame(game, draw, event);
 };
