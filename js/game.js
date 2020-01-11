@@ -21,8 +21,8 @@ class Player {
 
 class Game {
   constructor(player1, player2) {
-    this.player1 = player1;
-    this.player2 = player2;
+    this.player1 = new Player(player1);
+    this.player2 = new Player(player2);
     this.turnPlayed = 0;
   }
   get currentPlayer() {

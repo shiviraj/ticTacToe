@@ -47,7 +47,7 @@ class Draw {
 const initPlayers = function() {
   const name1 = prompt('Enter Player1 name', 'Player 1');
   const name2 = prompt('Enter Player2 name', 'Player 2');
-  return [new Player(name1), new Player(name2)];
+  return [name1, name2];
 };
 
 const playGame = (game, draw, event) => {
