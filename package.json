@@ -1,14 +1,13 @@
 {
-  "name": "ticTacToe_html",
+  "name": "ticTacToe",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shiviraj/ticTacToe_html.git"
+    "url": "git+https://github.com/shiviraj/ticTacToe.git"
   },
   "keywords": [],
   "author": "",
@@ -16,5 +15,6 @@
   "bugs": {
     "url": "https://github.com/shiviraj/ticTacToe_html/issues"
   },
-  "homepage": "https://github.com/shiviraj/ticTacToe_html#readme"
+  "homepage": "https://github.com/shiviraj/ticTacToe_html#readme",
+  "description": ""
 }
