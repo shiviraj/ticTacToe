@@ -23,7 +23,14 @@ class Draw {
   }
   setStyle(cell, count) {
     cell.classList.add(`played`);
-    cell.classList.add(`player${count % 2}`);
+    let turn = 0;
+    let text = 'X';
+    if (count % 2 == 1) {
+      turn = 1;
+      text = 'O';
+    }
+    cell.classList.add(`player${turn}`);
+    cell.innerText = text;
     cell.disabled = true;
   }
   initStatus(game) {
